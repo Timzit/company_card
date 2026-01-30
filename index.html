@@ -654,19 +654,19 @@ brochureBtn.addEventListener('click', (e) => {
     }, 2000);
 });
 
-// Alternative: Ouvrir le PDF dans un nouvel onglet si le téléchargement ne fonctionne pas
-brochureBtn.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    window.open('./STC_Brochure_F.pdf', '_blank');
-});
-                    
+             
                     
             
             // Animation pour le bouton flipbook
             const flipbookBtn = document.getElementById('flipbook-btn');
             flipbookBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                
+                   // Revenir à l'état initial après 2 secondes
+                    setTimeout(() => {
+                        brochureBtn.innerHTML = originalHTML;
+                    }, 2000);
+                }, 1500);
+            });
                
         
         // Effet de vague sur le header
