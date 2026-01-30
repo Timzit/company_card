@@ -289,8 +289,8 @@
         }
 
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: #ddd;
             cursor: pointer;
@@ -475,21 +475,21 @@ Nous intervenons de la phase d’étude et d’ingénierie jusqu’à la réalis
                             </div>
                         </a>
                         
-                        <a href="http://www.stcco-dz.com/Brochure" class="action-btn" id="flipbook-btn">
-                            <i class="fas fa-book-open"></i>
-                            <div class="btn-text">
-                                <h3>Flipbook</h3>
-                                <p>Brochure interactive en ligne</p>
-                            </div>
-                        </a>
+                       <a href="http://www.stcco-dz.com/Brochure" target="_blank" rel="noopener noreferrer" class="action-btn" id="flipbook-btn">
+    <i class="fas fa-book-open"></i>
+    <div class="btn-text">
+        <h3>Flipbook</h3>
+        <p>Brochure interactive en ligne</p>
+    </div>
+</a>
                         
-                        <a href="./STC_Brochure_F.pdf" class="action-btn" id="brochure-btn">
-                            <i class="fas fa-file-pdf"></i>
-                            <div class="btn-text">
-                                <h3>PDF Brochure</h3>
-                                <p>Téléchargez notre brochure</p>
-                            </div>
-                        </a>
+                        <a href="./STC_Brochure_F.pdf" download="STC_Brochure.pdf" class="action-btn" id="brochure-btn">
+    <i class="fas fa-file-pdf"></i>
+    <div class="btn-text">
+        <h3>PDF Brochure</h3>
+        <p>Téléchargez notre brochure</p>
+    </div>
+</a>
                         
                         <a href="mailto:info@stcco-dz.com" class="action-btn" id="email-btn">
                             <i class="fas fa-envelope"></i>
@@ -632,65 +632,42 @@ Nous intervenons de la phase d’étude et d’ingénierie jusqu’à la réalis
                 btn.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s both`;
             });
             
-            // Simulation de téléchargement PDF
-            const brochureBtn = document.getElementById('brochure-btn');
-            brochureBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                const originalHTML = brochureBtn.innerHTML;
-                brochureBtn.innerHTML = `
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <div class="btn-text">
-                        <h3>Téléchargement...</h3>
-                        <p>Préparation de la brochure</p>
-                    </div>
-                `;
-                
-                // Simulation d'un téléchargement
-                setTimeout(() => {
-                    brochureBtn.innerHTML = originalHTML;
-                    brochureBtn.innerHTML = `
-                        <i class="fas fa-check-circle"></i>
-                        <div class="btn-text">
-                            <h3>Téléchargé!</h3>
-                            <p>Brochure téléchargée</p>
-                        </div>
-                    `;
+            // Téléchargement réel du PDF avec feedback visuel
+const brochureBtn = document.getElementById('brochure-btn');
+brochureBtn.addEventListener('click', (e) => {
+    // Laisser le navigateur gérer le téléchargement normalement
+    // Mais ajouter un feedback visuel
+    const originalHTML = brochureBtn.innerHTML;
+    
+    // Feedback immédiat
+    brochureBtn.innerHTML = `
+        <i class="fas fa-download"></i>
+        <div class="btn-text">
+            <h3>Téléchargement...</h3>
+            <p>Démarrage du téléchargement</p>
+        </div>
+    `;
+    
+    // Revenir à l'état initial après 2 secondes
+    setTimeout(() => {
+        brochureBtn.innerHTML = originalHTML;
+    }, 2000);
+});
+
+// Alternative: Ouvrir le PDF dans un nouvel onglet si le téléchargement ne fonctionne pas
+brochureBtn.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    window.open('./STC_Brochure_F.pdf', '_blank');
+});
                     
-                    // Revenir à l'état initial après 2 secondes
-                    setTimeout(() => {
-                        brochureBtn.innerHTML = originalHTML;
-                    }, 2000);
-                }, 1500);
-            });
+                    
             
             // Animation pour le bouton flipbook
             const flipbookBtn = document.getElementById('flipbook-btn');
             flipbookBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 
-                // Simulation d'ouverture du flipbook
-                flipbookBtn.innerHTML = `
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <div class="btn-text">
-                        <h3>Ouverture...</h3>
-                        <p>Chargement du flipbook</p>
-                    </div>
-                `;
-                
-                setTimeout(() => {
-                    // Ouvrir une fenêtre simulée
-                    alert("Ouverture du flipbook interactif de STC Co. En production, cela ouvrirait une visionneuse de brochure interactive.");
-                    flipbookBtn.innerHTML = `
-                        <i class="fas fa-book-open"></i>
-                        <div class="btn-text">
-                            <h3>Flipbook</h3>
-                            <p>Brochure interactive en ligne</p>
-                        </div>
-                    `;
-                }, 1000);
-            });
-        });
+               
         
         // Effet de vague sur le header
         const header = document.querySelector('.card-header');
