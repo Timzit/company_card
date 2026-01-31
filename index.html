@@ -475,14 +475,14 @@ Nous intervenons de la phase d’étude et d’ingénierie jusqu’à la réalis
                             </div>
                         </a>
                         
-                       <a href="http://www.stcco-dz.com/Brochure" target="_blank" rel="noopener noreferrer" class="action-btn" id="flipbook-btn">
+       <a href="http://www.stcco-dz.com/Brochure" class="action-btn" id="flipbook-btn">
     <i class="fas fa-book-open"></i>
     <div class="btn-text">
         <h3>Flipbook</h3>
         <p>Brochure interactive en ligne</p>
     </div>
-</a>
-                        
+</a>                
+         
                         <a href="./STC_Brochure_F.pdf" download="STC_Brochure.pdf" class="action-btn" id="brochure-btn">
     <i class="fas fa-file-pdf"></i>
     <div class="btn-text">
@@ -657,16 +657,12 @@ brochureBtn.addEventListener('click', (e) => {
              
                     
             
-            // Animation pour le bouton flipbook
-            const flipbookBtn = document.getElementById('flipbook-btn');
-            flipbookBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                   // Revenir à l'état initial après 2 secondes
-                    setTimeout(() => {
-                        brochureBtn.innerHTML = originalHTML;
-                    }, 2000);
-                }, 1500);
-            });
+           // Gestion du bouton flipbook
+const flipbookBtn = document.getElementById('flipbook-btn');
+flipbookBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open(this.href, '_blank', 'noopener,noreferrer');
+});
                
         
         // Effet de vague sur le header
