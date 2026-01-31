@@ -475,14 +475,14 @@ Nous intervenons de la phase d’étude et d’ingénierie jusqu’à la réalis
                             </div>
                         </a>
                         
-       <a href="http://www.stcco-dz.com/Brochure" class="action-btn" id="flipbook-btn">
+                       <a href="http://www.stcco-dz.com/Brochure" target="_blank" rel="noopener noreferrer" class="action-btn" id="flipbook-btn">
     <i class="fas fa-book-open"></i>
     <div class="btn-text">
         <h3>Flipbook</h3>
         <p>Brochure interactive en ligne</p>
     </div>
-</a>                
-         
+</a>
+                        
                         <a href="./STC_Brochure_F.pdf" download="STC_Brochure.pdf" class="action-btn" id="brochure-btn">
     <i class="fas fa-file-pdf"></i>
     <div class="btn-text">
@@ -565,116 +565,160 @@ Nous intervenons de la phase d’étude et d’ingénierie jusqu’à la réalis
         </div>
     </div>
 
-    <script>
-        // Gestion du slider
-        const slider = document.getElementById('slider');
-        const dots = document.querySelectorAll('.dot');
-        const prevBtn = document.getElementById('prev-slide');
-        const nextBtn = document.getElementById('next-slide');
-        let currentSlide = 0;
-        const totalSlides = 2;
-        
-        // Fonction pour aller à une slide spécifique
-        function goToSlide(n) {
-            currentSlide = (n + totalSlides) % totalSlides;
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            
-            // Mettre à jour les dots
-            dots.forEach((dot, index) => {
-                if (index === currentSlide) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-        
-        // Événements pour les flèches
-        prevBtn.addEventListener('click', () => {
-            goToSlide(currentSlide - 1);
-        });
-        
-        nextBtn.addEventListener('click', () => {
-            goToSlide(currentSlide + 1);
-        });
-        
-        // Événements pour les dots
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                const slideIndex = parseInt(dot.getAttribute('data-slide'));
-                goToSlide(slideIndex);
-            });
-        });
-        
-        // Slider automatique
-        let slideInterval = setInterval(() => {
+   <script>
+    // Gestion du slider
+    const slider = document.getElementById('slider');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+    let currentSlide = 0;
+    const totalSlides = 2;
+    let slideInterval;
+    
+    // Fonction pour démarrer le slider automatique
+    function startAutoSlide() {
+        slideInterval = setInterval(() => {
             goToSlide(currentSlide + 1);
         }, 6000);
-        
-        // Arrêter le slider automatique au survol
-        const sliderContainer = document.querySelector('.slider-container');
-        sliderContainer.addEventListener('mouseenter', () => {
-            clearInterval(slideInterval);
-        });
-        
-        sliderContainer.addEventListener('mouseleave', () => {
-            slideInterval = setInterval(() => {
-                goToSlide(currentSlide + 1);
-            }, 6000);
-        });
-        
-        // Animation des boutons au chargement
-        document.addEventListener('DOMContentLoaded', () => {
-            const actionBtns = document.querySelectorAll('.action-btn');
-            
-            actionBtns.forEach((btn, index) => {
-                btn.style.animationDelay = `${index * 0.1}s`;
-                btn.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s both`;
-            });
-            
-            // Téléchargement réel du PDF avec feedback visuel
-const brochureBtn = document.getElementById('brochure-btn');
-brochureBtn.addEventListener('click', (e) => {
-    // Laisser le navigateur gérer le téléchargement normalement
-    // Mais ajouter un feedback visuel
-    const originalHTML = brochureBtn.innerHTML;
+    }
     
-    // Feedback immédiat
-    brochureBtn.innerHTML = `
-        <i class="fas fa-download"></i>
-        <div class="btn-text">
-            <h3>Téléchargement...</h3>
-            <p>Démarrage du téléchargement</p>
-        </div>
-    `;
+    // Fonction pour arrêter le slider automatique
+    function stopAutoSlide() {
+        clearInterval(slideInterval);
+    }
     
-    // Revenir à l'état initial après 2 secondes
-    setTimeout(() => {
-        brochureBtn.innerHTML = originalHTML;
-    }, 2000);
-});
-
-             
-                    
-            
-           // Gestion du bouton flipbook
-const flipbookBtn = document.getElementById('flipbook-btn');
-flipbookBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    window.open(this.href, '_blank', 'noopener,noreferrer');
-});
-               
+    // Fonction pour aller à une slide spécifique
+    function goToSlide(n) {
+        currentSlide = (n + totalSlides) % totalSlides;
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
         
-        // Effet de vague sur le header
-        const header = document.querySelector('.card-header');
-        header.addEventListener('mousemove', (e) => {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            const beforeStyle = header.style;
-            beforeStyle.setProperty('--x', x);
-            beforeStyle.setProperty('--y', y);
+        // Mettre à jour les dots
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
         });
-    </script>
+    }
+    
+    // Événements pour les flèches
+    prevBtn.addEventListener('click', () => {
+        stopAutoSlide();
+        goToSlide(currentSlide - 1);
+        setTimeout(startAutoSlide, 10000); // Redémarrer après 10 secondes
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        stopAutoSlide();
+        goToSlide(currentSlide + 1);
+        setTimeout(startAutoSlide, 10000); // Redémarrer après 10 secondes
+    });
+    
+    // Événements pour les dots
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            stopAutoSlide();
+            const slideIndex = parseInt(dot.getAttribute('data-slide'));
+            goToSlide(slideIndex);
+            setTimeout(startAutoSlide, 10000); // Redémarrer après 10 secondes
+        });
+    });
+    
+    // Démarrer le slider automatique initialement
+    startAutoSlide();
+    
+    // Arrêter le slider automatique au survol
+    const sliderContainer = document.querySelector('.slider-container');
+    sliderContainer.addEventListener('mouseenter', () => {
+        stopAutoSlide();
+    });
+    
+    sliderContainer.addEventListener('mouseleave', () => {
+        startAutoSlide();
+    });
+    
+    // Animation des boutons au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+        const actionBtns = document.querySelectorAll('.action-btn');
+        
+        actionBtns.forEach((btn, index) => {
+            btn.style.animationDelay = `${index * 0.1}s`;
+            btn.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s both`;
+        });
+        
+        // Téléchargement réel du PDF avec feedback visuel
+        const brochureBtn = document.getElementById('brochure-btn');
+        brochureBtn.addEventListener('click', (e) => {
+            // Laisser le navigateur gérer le téléchargement normalement
+            // Mais ajouter un feedback visuel
+            const originalHTML = brochureBtn.innerHTML;
+            
+            // Feedback immédiat
+            brochureBtn.innerHTML = `
+                <i class="fas fa-download"></i>
+                <div class="btn-text">
+                    <h3>Téléchargement...</h3>
+                    <p>Démarrage du téléchargement</p>
+                </div>
+            `;
+            
+            // Revenir à l'état initial après 2 secondes
+            setTimeout(() => {
+                brochureBtn.innerHTML = originalHTML;
+            }, 2000);
+        });
+        
+        // Gestion spéciale pour le bouton flipbook
+        const flipbookBtn = document.getElementById('flipbook-btn');
+        
+        flipbookBtn.addEventListener('click', (e) => {
+            // Ne pas empêcher le comportement par défaut
+            // Juste arrêter le slider automatique pendant que l'utilisateur utilise le flipbook
+            stopAutoSlide();
+            
+            // Feedback visuel
+            const originalHTML = flipbookBtn.innerHTML;
+            flipbookBtn.innerHTML = `
+                <i class="fas fa-spinner fa-spin"></i>
+                <div class="btn-text">
+                    <h3>Ouverture...</h3>
+                    <p>Flipbook en chargement</p>
+                </div>
+            `;
+            
+            // Redémarrer le slider après un délai plus long (30 secondes)
+            // pour laisser le temps à l'utilisateur de consulter le flipbook
+            setTimeout(() => {
+                flipbookBtn.innerHTML = originalHTML;
+                startAutoSlide();
+            }, 30000);
+        });
+        
+        // Détecter quand l'utilisateur revient sur la page (après avoir consulté le flipbook)
+        window.addEventListener('focus', () => {
+            // Redémarrer le slider quand l'utilisateur revient sur l'onglet
+            if (!slideInterval) {
+                startAutoSlide();
+            }
+        });
+        
+        // Arrêter le slider quand l'utilisateur quitte l'onglet
+        window.addEventListener('blur', () => {
+            stopAutoSlide();
+        });
+    });
+    
+    // Effet de vague sur le header
+    const header = document.querySelector('.card-header');
+    header.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        const beforeStyle = header.style;
+        beforeStyle.setProperty('--x', x);
+        beforeStyle.setProperty('--y', y);
+    });
+</script>
 </body>
 </html>
